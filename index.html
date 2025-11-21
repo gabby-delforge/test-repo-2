@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confetti Button</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .confetti-button {
+            padding: 20px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .confetti-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .confetti-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <button class="confetti-button" onclick="celebrate()">Click for Confetti!</button>
+
+    <script>
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4'];
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+
+            // Random starting position near the button
+            const startX = window.innerWidth / 2 + (Math.random() - 0.5) * 100;
+            const startY = window.innerHeight / 2;
+
+            // Random velocity
+            const velocityX = (Math.random() - 0.5) * 10;
+            const velocityY = (Math.random() * -15) - 5;
+
+            // Random rotation
+            const rotation = Math.random() * 360;
+            const rotationSpeed = (Math.random() - 0.5) * 20;
+
+            // Random color and shape
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const shapes = ['circle', 'square'];
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+
+            confetti.style.left = startX + 'px';
+            confetti.style.top = startY + 'px';
+            confetti.style.backgroundColor = color;
+            confetti.style.borderRadius = shape === 'circle' ? '50%' : '0';
+            confetti.style.transform = `rotate(${rotation}deg)`;
+
+            document.body.appendChild(confetti);
+
+            // Animation
+            let posX = startX;
+            let posY = startY;
+            let velX = velocityX;
+            let velY = velocityY;
+            let rot = rotation;
+            let opacity = 1;
+            const gravity = 0.5;
+
+            function animate() {
+                velY += gravity;
+                posX += velX;
+                posY += velY;
+                rot += rotationSpeed;
+                opacity -= 0.01;
+
+                confetti.style.left = posX + 'px';
+                confetti.style.top = posY + 'px';
+                confetti.style.transform = `rotate(${rot}deg)`;
+                confetti.style.opacity = opacity;
+
+                if (opacity > 0 && posY < window.innerHeight) {
+                    requestAnimationFrame(animate);
+                } else {
+                    confetti.remove();
+                }
+            }
+
+            animate();
+        }
+
+        function celebrate() {
+            // Create multiple confetti pieces
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    createConfetti();
+                }, i * 10);
+            }
+        }
+    </script>
+</body>
+</html>
