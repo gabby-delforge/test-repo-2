@@ -42,34 +42,23 @@
 <body>
     <button class="confetti-button" onclick="celebrate()">Click for Confetti!</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
     <script>
         function celebrate() {
-            // Fire confetti from the center
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
+            // Get the button element
+            const button = document.querySelector('.confetti-button');
+
+            // Create confetti from the button
+            party.confetti(button, {
+                count: party.variation.range(60, 100),
+                spread: party.variation.range(40, 80)
             });
 
-            // Add a second burst with different colors
-            setTimeout(() => {
-                confetti({
-                    particleCount: 50,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 }
-                });
-            }, 200);
-
-            setTimeout(() => {
-                confetti({
-                    particleCount: 50,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 }
-                });
-            }, 400);
+            // Add sparkles effect
+            party.sparkles(button, {
+                count: party.variation.range(20, 40),
+                speed: party.variation.range(100, 400)
+            });
         }
     </script>
 </body>
